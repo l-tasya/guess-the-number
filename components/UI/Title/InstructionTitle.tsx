@@ -1,4 +1,4 @@
-import {StyleSheet, Text} from "react-native";
+import {Dimensions, StyleSheet, Text} from "react-native";
 import React from "react";
 import Colors from "../../../util/colors";
 
@@ -12,12 +12,12 @@ const InstructionTitle: React.FC<IProps> = ({children, style}) => {
         {children}
     </Text>
 }
-
+const deviceWidth = Dimensions.get('window').width
 const styles = StyleSheet.create({
     title: {
         color: Colors.accent500,
-        fontSize: 12,
-        fontFamily: 'my-font',
+        fontSize: deviceWidth < 380?24:36,
+        fontFamily: 'my-font-title',
         textAlign: 'center',
         marginBottom: 12,
     },

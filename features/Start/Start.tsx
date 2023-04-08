@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View} from 'react-native';
 import React, {useState} from "react";
 import PrimaryButton from "../../components/UI/PrimaryButton/PrimaryButton";
 import Colors from '../../util/colors';
@@ -43,44 +43,50 @@ const StartGameScreen: React.FC<IProps> = ({c1}) => {
 
     }
 
-    return <View style={styles.rootContainer}>
-        <Title>Guess my Number</Title>
-        <Card>
-            <InstructionTitle>Input a number</InstructionTitle>
-            <View>
-                <TextInput
-                    maxLength={2}
-                    value={number}
-                    onChangeText={onChangeHandler}
-                    keyboardType={'number-pad'}
-                    style={styles.numberInput}
-                    autoCapitalize={'none'}
-                    autoComplete={"off"}
-                    placeholder={'0'}
-                    placeholderTextColor={Colors.primary500}
-                />
-            </View>
-            {error && <Text style={styles.errorText}>{error}</Text>}
-            <View style={styles.buttonsContainer}>
-                <View style={styles.buttonContainer}>
-                    <PrimaryButton onClick={reset}>Reset</PrimaryButton>
+    const { height} = useWindowDimensions()
+
+    const marginTopValue = (height < 400) ? 0 : height / 10;
+    return <ScrollView style={styles.screen}><KeyboardAvoidingView style={styles.screen} behavior={'position'}>
+        <View style={[styles.rootContainer, {marginTop: marginTopValue}]}>
+            <Title>Guess my Number</Title>
+            <Card>
+                <InstructionTitle>Input a number</InstructionTitle>
+                <View>
+                    <TextInput
+                        maxLength={2}
+                        value={number}
+                        onChangeText={onChangeHandler}
+                        keyboardType={'number-pad'}
+                        style={styles.numberInput}
+                        autoCapitalize={'none'}
+                        autoComplete={"off"}
+                        placeholder={'0'}
+                        placeholderTextColor={Colors.primary500}
+                    />
                 </View>
-                <View style={styles.buttonContainer}>
-                    <PrimaryButton onClick={confirm}>Confirm</PrimaryButton>
+                {error && <Text style={styles.errorText}>{error}</Text>}
+                <View style={styles.buttonsContainer}>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton onClick={reset}>Reset</PrimaryButton>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton onClick={confirm}>Confirm</PrimaryButton>
+                    </View>
                 </View>
-            </View>
-        </Card>
-    </View>
+            </Card>
+        </View>
+    </KeyboardAvoidingView>
+    </ScrollView>
 }
 
 const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
-        marginTop: 100,
         alignItems: "center",
     },
-
-
+    screen: {
+        flex: 1,
+    },
     numberInput: {
         height: 50,
         fontSize: 32,
@@ -88,7 +94,7 @@ const styles = StyleSheet.create({
         color: Colors.accent500,
         borderBottomWidth: 2,
         marginVertical: 8,
-        fontFamily:  'my-font',
+        fontFamily: 'my-font',
         textAlign: 'center',
         width: 50,
 

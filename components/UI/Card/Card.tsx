@@ -1,4 +1,4 @@
-import {StyleSheet, View} from "react-native";
+import {Dimensions, StyleSheet, View} from "react-native";
 import React from "react";
 import Colors from "../../../util/colors";
 
@@ -10,12 +10,12 @@ const Card: React.FC<IProps> = ({children}) =>{
         {children}
     </View>
 }
-
+const deviceWidth = Dimensions.get('window').width
 const styles = StyleSheet.create({
     card: {
-        width: '80%',
+        width: 400,
+        maxWidth: '90%',
         padding: 16,
-        margin: 16,
         backgroundColor: Colors.primary800,
         borderRadius: 8,
         elevation: 8,
@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         alignItems: 'center',
         textAlign: 'center',
+        margin: deviceWidth < 380?16:24,
     },
 })
 

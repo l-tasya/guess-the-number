@@ -1,11 +1,11 @@
 
 
 const Colors = {
-    primary500: "#72063c",
-    primary600: "#640233",
-    primary800: "#3b021f",
-    primary700: "#4e0329",
-    accent500: "#ddb52f",
+    primary500: "#033F63",
+    primary600: "#02324f",
+    primary800: "#02283f",
+    primary700: "#012134",
+    accent500: "#FEDC97",
     error: "#ff8686"
 
 }

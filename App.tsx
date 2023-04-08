@@ -3,7 +3,6 @@ import StartGameScreen from "./features/Start/Start";
 import {LinearGradient} from "expo-linear-gradient";
 import {useState} from 'react';
 import Game from './features/Game/Game';
-import Colors from "./util/colors";
 import GameOver from "./features/GameOver/GameOver";
 import {useFonts} from "expo-font"
 import AppLoading from "expo-app-loading";
@@ -15,6 +14,7 @@ export default function App() {
     const [fontsLoading] = useFonts({
         'my-font': require('./assets/fonts/digital-dream.regular.ttf'),
         'my-font-bold': require('./assets/fonts/digital-dream.fat.ttf'),
+        'my-font-title': require('./assets/fonts/BALLSONTHERAMPAGE.ttf')
     })
 
     if (!fontsLoading) {
@@ -25,14 +25,15 @@ export default function App() {
         setUserNumber(pickedNumber)
         setGameIsOver(false)
     }
-    const restart = () =>{
+
+    const restart = () => {
         setGameIsOver(false)
         setUserNumber(null)
         setGuessRound(0)
     }
     let screen = <StartGameScreen c1={pickedNumberHandler}/>
     const increment = () => {
-        setGuessRound(prevState => prevState+1)
+        setGuessRound(prevState => prevState + 1)
     }
     if (userNumber) {
         screen = <Game userNumber={userNumber} win={() => setGameIsOver(true)} inc={increment}/>
@@ -40,11 +41,13 @@ export default function App() {
     if (gameIsOver && userNumber) {
         screen = <GameOver userNumber={userNumber} rounds={guessRound} restart={restart}/>
     }
-    return <LinearGradient colors={[Colors.primary700, Colors.accent500]} style={styles.rootScreen}>
+
+
+    return <LinearGradient colors={['#033F63', '#28666E', '#7c9885', '#B5B682', '#FEDC97']} style={styles.rootScreen}>
         <ImageBackground
             style={styles.rootScreen}
             resizeMode={'cover'}
-            source={require('./assets/background1.png')}
+            source={require('./assets/E-City.jpg')}
             imageStyle={styles.backgroundImage}
         >
             <SafeAreaView style={styles.container}>
@@ -53,7 +56,6 @@ export default function App() {
         </ImageBackground>
     </LinearGradient>
 }
-
 const styles = StyleSheet.create({
     rootScreen: {
         flex: 1,
@@ -61,7 +63,7 @@ const styles = StyleSheet.create({
 
     },
     container: {
-        paddingTop: 50,
+        // paddingTop:deviceHeight<400?0:'10%',
         flex: 1,
     },
     backgroundImage: {
