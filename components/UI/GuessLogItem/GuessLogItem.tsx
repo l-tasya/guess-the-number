@@ -1,5 +1,5 @@
 import React from "react";
-import {StyleSheet, Text, View} from "react-native";
+import {Dimensions, StyleSheet, Text, View} from "react-native";
 import Colors from "../../../util/colors";
 
 
@@ -10,12 +10,12 @@ interface IProps {
 
 const GuessLogItem: React.FC<IProps> = ({roundNumber, guess}) => {
     return <View style={styles.listItem}>
-        <Text># {roundNumber}</Text>
-        <Text>Opponent's Guess: {guess}</Text>
+        <Text style={styles.text}># {roundNumber}</Text>
+        <Text style={styles.text}>Opponent's Guess: {guess}</Text>
     </View>
 }
 
-
+const deviceWidth = Dimensions.get('window').width
 const styles = StyleSheet.create({
     listItem: {
         borderColor: Colors.primary800,
@@ -32,7 +32,12 @@ const styles = StyleSheet.create({
         shadowOffset: {width: 0, height: 0},
         shadowRadius: 3,
         marginRight: 10,
+
     },
+    text: {
+        fontFamily: 'my-font-title',
+        fontSize:deviceWidth<380?12:18,
+    }
 })
 
 export default  GuessLogItem;

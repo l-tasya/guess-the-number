@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from "react";
-import {Alert, FlatList, StyleSheet, View} from "react-native";
+import {Alert, FlatList, StyleSheet, useWindowDimensions, View} from "react-native";
 import PrimaryButton from "../../components/UI/PrimaryButton/PrimaryButton";
 import {Title} from "../../components/UI/Title/Title";
 import NumberContainer from "../../components/Game/NumberContainer";
@@ -60,15 +60,16 @@ const Game: React.FC<IProps> = ({userNumber, win, inc}) => {
         setGuessRounds(prevState => [...prevState, newRndNumber])
     }, [current, maxBoundary, minBoundary, generateRandomBetween])
 
-
     const guessRoundListLength = guessRounds.length
-    return <View style={styles.screen}>
-        <Title>Opponent's Guess</Title>
-        <NumberContainer>
-            {current}
-        </NumberContainer>
+    const {width, height} = useWindowDimensions()
+    const marginTopValue = (height < 400) ? 0 : height / 10;
+
+
+    let content = <><NumberContainer>
+        {current}
+    </NumberContainer>
         <Card>
-            <InstructionTitle>Higher or lower</InstructionTitle>
+            <InstructionTitle>Higher or lower?</InstructionTitle>
             <View style={styles.buttonsContainer}>
                 <View style={{flex: 1}}><PrimaryButton onClick={() => nextGuessHandler('lower')}>
                     <Ionicons name={'md-remove'} size={24} color={'#FFF'}/>
@@ -78,12 +79,36 @@ const Game: React.FC<IProps> = ({userNumber, win, inc}) => {
                 </PrimaryButton></View>
             </View>
         </Card>
+    </>
+
+
+    if (width > 500) {
+        content = <>
+            <InstructionTitle>Higher or lower?</InstructionTitle>
+            <View style={styles.buttonsContainerWide}>
+                <PrimaryButton style={styles.wideButton} onClick={() => nextGuessHandler('higher')}>
+                    <Ionicons name={'md-add'} size={24} color={'#FFF'}/>
+                </PrimaryButton>
+
+                <NumberContainer>{current}</NumberContainer>
+
+                <PrimaryButton style={styles.wideButton} onClick={() => nextGuessHandler('lower')}>
+                    <Ionicons name={'md-remove'} size={24} color={'#FFF'}/>
+                </PrimaryButton>
+            </View>
+        </>
+    }
+
+    return <View style={[styles.screen, {marginTop: marginTopValue}]}>
+        <Title>Opponent's Guess</Title>
+        {content}
         <View style={styles.log}>
             <FlatList data={guessRounds}
                       alwaysBounceHorizontal={false}
                       renderItem={(r) => {
                           return <GuessLogItem guess={r.item} roundNumber={guessRoundListLength - r.index}/>
                       }}
+
                       keyExtractor={item => item.toString()}
             />
         </View>
@@ -92,7 +117,6 @@ const Game: React.FC<IProps> = ({userNumber, win, inc}) => {
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-        padding: 12,
         alignItems: "center",
     },
     buttonsContainer: {
@@ -103,7 +127,19 @@ const styles = StyleSheet.create({
     log: {
         flex: 1,
         width: '80%',
-        marginBottom: 16
+        borderTopWidth: 1,
+        borderTopColor: 'white',
+        borderBottomWidth: 1,
+        borderBottomColor: 'white',
+    },
+    buttonsContainerWide: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: "center",
+    },
+    wideButton: {
+        width: 100,
+        justifyContent: 'center',
     }
 
 })
